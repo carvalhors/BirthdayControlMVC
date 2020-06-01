@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BirthdayControlMVC.Models.UsuarioModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Busca</h4>
+<br />
+
+<p>
+    <a asp-action="Create">Novo usuário</a>
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Usuario" asp-action="Search" method="get">
+            <p>
+                Nome: <input type="text" name="search" />
+                <input type="submit" value="Pesquisar" />
+            </p>
+        </form>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UsuarioID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sobrenome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsuarioID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sobrenome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { UsuarioID = item.UsuarioID }) |
+                    @Html.ActionLink("Detalhes", "Details", new { UsuarioID = item.UsuarioID }) |
+                    @Html.ActionLink("Excluir", "Delete", new { UsuarioID = item.UsuarioID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
