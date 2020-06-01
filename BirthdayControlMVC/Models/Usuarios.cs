@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BirthdayControlMVC.Models
 {
@@ -9,7 +6,7 @@ namespace BirthdayControlMVC.Models
     {
         public List<UsuarioModel> ListaUsuarios = new List<UsuarioModel>();
         private static int SetIdUsuario = 1;
-  
+
 
         public void CriarUsuario(UsuarioModel UsuarioModelo)
         {
@@ -17,38 +14,38 @@ namespace BirthdayControlMVC.Models
             ListaUsuarios.Add(UsuarioModelo);
         }
 
-        public void AtualizaUsuario(UsuarioModel UsuarioModelo)
+        public void AtualizarUsuario(UsuarioModel UsuarioModelo)
         {
-            foreach (UsuarioModel usuario in ListaUsuarios)
+            foreach (UsuarioModel U in ListaUsuarios)
             {
-                if(usuario.UsuarioID == UsuarioModelo.UsuarioID)
-                { 
-                    usuario.Nome = UsuarioModelo.Nome;
-                    usuario.Sobrenome = UsuarioModelo.Sobrenome;
-                    usuario.Email = UsuarioModelo.Email;
-                    usuario.DataNascimento = UsuarioModelo.DataNascimento;                  
+                if (U.UsuarioID == UsuarioModelo.UsuarioID)
+                {
+                    U.Nome = UsuarioModelo.Nome;
+                    U.Sobrenome = UsuarioModelo.Sobrenome;
+                    U.Email = UsuarioModelo.Email;
+                    U.DataNascimento = UsuarioModelo.DataNascimento;
                     break;
                 }
             }
-        } 
+        }
 
         public void DeletarUsuario(UsuarioModel UsuarioModelo)
         {
             ListaUsuarios.RemoveAll(x => x.UsuarioID == UsuarioModelo.UsuarioID);
         }
 
-        public UsuarioModel BuscaUsuario(string Nome)
+        public UsuarioModel BuscarUsuario(string Nome)
         {
-            UsuarioModel _usuarioModel = null;
+            UsuarioModel UsuarioModelo = null;
 
-            foreach (UsuarioModel _usuario in ListaUsuarios)
+            foreach (UsuarioModel Usr in ListaUsuarios)
             {
-                if (_usuario.Nome == Nome)
+                if (Usr.Nome == Nome)
                 {
-                    _usuarioModel = _usuario;
+                    UsuarioModelo = Usr;
                 }
             }
-            return _usuarioModel;
+            return UsuarioModelo;
 
         }
     }

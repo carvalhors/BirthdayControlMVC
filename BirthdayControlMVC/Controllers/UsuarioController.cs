@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using BirthdayControlMVC.Models;
 
 namespace BirthdayControlMVC.Controllers
@@ -12,7 +7,7 @@ namespace BirthdayControlMVC.Controllers
     public class UsuarioController : Controller
     {
 
-        private static Usuarios Usuarios = new Usuarios();
+        private static readonly Usuarios Usuarios = new Usuarios();
 
         public IActionResult Index()
         {
@@ -40,7 +35,7 @@ namespace BirthdayControlMVC.Controllers
         [HttpPost]
         public ActionResult Edit(UsuarioModel UsuarioModel)
         {
-            Usuarios.AtualizaUsuario(UsuarioModel);
+            Usuarios.AtualizarUsuario(UsuarioModel);
             return RedirectToAction("Index");
         }
 
