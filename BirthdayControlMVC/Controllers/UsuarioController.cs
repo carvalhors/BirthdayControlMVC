@@ -1,17 +1,23 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using BirthdayControlMVC.Models;
+using BirthdayControlMVC.Data;
 
 namespace BirthdayControlMVC.Controllers
 {
     public class UsuarioController : Controller
     {
-
-        private static readonly Usuarios Usuarios = new Usuarios();
-
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
-            return View(Usuarios.ListaUsuarios);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return View(new UsuarioRepositorySql().ListarTodosUsuarios("T"));
+            }
+            else
+            {
+                var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("T");
+                return View(RepositorioUsuario.Where(u => u.Nome.Contains(search)));
+            }
         }
 
         public ViewResult Create()
@@ -22,26 +28,36 @@ namespace BirthdayControlMVC.Controllers
         [HttpPost]
         public ActionResult Create(UsuarioModel UsuarioModel)
         {
-            Usuarios.CriarUsuario(UsuarioModel);
+            var RepositorioUsuario = new UsuarioRepositorySql();
+
+            //Salvar no banco
+            RepositorioUsuario.SalvarUsuarioDb(UsuarioModel);
+
+            //Salva na Memória
+            //Usuarios.CriarUsuario(UsuarioModel);
             return RedirectToAction("Index");
         }
 
         public ViewResult Edit(int UsuarioID)
         {
-            var usr = Usuarios.ListaUsuarios.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
+            var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("T");
+            var usr = RepositorioUsuario.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
             return View(usr);
         }
 
         [HttpPost]
         public ActionResult Edit(UsuarioModel UsuarioModel)
         {
-            Usuarios.AtualizarUsuario(UsuarioModel);
+            var RepositorioUsuario = new UsuarioRepositorySql();
+            RepositorioUsuario.EditarUsuarioDb(UsuarioModel);
+
             return RedirectToAction("Index");
         }
 
         public ViewResult Delete(int UsuarioID)
         {
-            var usr = Usuarios.ListaUsuarios.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
+            var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("T");
+            var usr = RepositorioUsuario.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
             return View(usr);
 
         }
@@ -49,32 +65,34 @@ namespace BirthdayControlMVC.Controllers
         [HttpPost]
         public ActionResult Delete(UsuarioModel UsuarioModel)
         {
-            Usuarios.DeletarUsuario(UsuarioModel);
+            var RepositorioUsuario = new UsuarioRepositorySql();
+            RepositorioUsuario.DeletarUsuarioDb(UsuarioModel);
             return RedirectToAction("Index");
         }
 
-     
+
         public ViewResult Details(int UsuarioID)
         {
-            var usr = Usuarios.ListaUsuarios.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
+            var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("T");
+            var usr = RepositorioUsuario.Where(u => u.UsuarioID == UsuarioID).FirstOrDefault();
             return View(usr);
 
-        }
+        }       
 
-   
         [HttpGet]
-        public ActionResult Search(string search)
+        public ActionResult Aniversariantes(int tipo)
         {
-            if (search != null)
+            if (tipo == 1)
             {
-                var usr = Usuarios.ListaUsuarios.Where(u => u.Nome.Contains(search));
-                return View(usr);
+                var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("D");
+                return View(RepositorioUsuario);
             }
             else
             {
-                return View(Usuarios.ListaUsuarios);
+                var RepositorioUsuario = new UsuarioRepositorySql().ListarTodosUsuarios("N");
+                return View(RepositorioUsuario);
             }
-           
+
         }
 
     }
